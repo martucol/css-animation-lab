@@ -7,6 +7,7 @@
     <style>
         body {
             height: 100vh;
+            margin: 0;
             background: rgba(2,0,36,1);
         }
         .flex {
@@ -43,6 +44,7 @@
         }
         .radial-gradient--3 {
             opacity: 0;
+            width: 100%;
             background: radial-gradient(circle, rgb(255, 51, 0) 37%, rgba(236,255,0,1) 39%, rgba(103,129,32,1) 50%, rgba(126,36,130,1) 58%, rgba(0,212,255,1) 100%);
             background-position: center;
         }
@@ -52,11 +54,15 @@
         }
         #card.clicked .radial-gradient--3 {
             opacity: 1;
-            animation: zoom-in ease-out 4s 1s;
+            animation: zoom-in ease-out 4s 1.3s;
             animation-fill-mode: forwards;
         }
         #card.clicked #enter-button {
             display: none;
+        }
+        #card.clicked {
+            transition: width ease-in 2s 2s;
+            width: 100%;
         }
         #enter-button {
             color: white;
