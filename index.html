@@ -48,6 +48,9 @@
             background: radial-gradient(circle, rgb(255, 51, 0) 37%, rgba(236,255,0,1) 39%, rgba(103,129,32,1) 50%, rgba(126,36,130,1) 58%, rgba(0,212,255,1) 100%);
             background-position: center;
         }
+        .radial-gradient--4 {
+            background: radial-gradient(circle, rgba(2,0,36,1) 25%, rgba(255,55,0,1) 35%, rgba(48,10,0,1) 41%, rgba(0,0,0,1) 80%); 
+        }
         #card.clicked .radial-gradient--2,
         #card.clicked .radial-gradient--1 {
             opacity: 0;
@@ -88,9 +91,57 @@
             display: none;
         }
 
-        #menu img {
+        #menu #menu-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
             opacity: 0;
-            transition: opacity 4s;
+            transition: all 4s;
+            overflow: hidden;
+            perspective: 900px;
+        }
+
+        #menu p {
+            color: white;
+        }
+
+        #menu p span{
+            display: inline-block;
+            margin-right: 30px;
+        }
+
+        #menu img {
+            position: absolute;
+            left: calc(50% - 250px);
+            top: calc(50% - 140px);
+            transition: transform 1.5s ease-out;
+            transform-origin: top left;
+        }
+
+        #menu img:hover {
+            transform: rotateY(45deg);
+        }
+
+        .text-container {
+            height: 100vh;
+            width: 100vh;
+            animation: marquee 60s infinite linear;
+            margin: auto;
+        }
+
+        #circle-text {
+            height: 675px;
+            width: 675px;
+            border-radius: 50%;
+        }
+
+        @keyframes marquee {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
@@ -105,14 +156,27 @@
             </div>
         </div>
         <div id="menu" class="flex">
-            <img id="stream-img" src="stream.gif" alt="a stream of water calmly running through rocks forever">
+            <div id="menu-content">
+               <div class="text-container flex">
+                    <p id="circle-text" class="flex">
+                        |　　　行春や　鳥啼き魚の　目は泪　　　||　　　
+                        夏草や　兵どもが　夢の跡　　　||　　　
+                        閑けさや　岩にしみいる　蝉の声　　　||　　　
+                        五月雨を　あつめてはやし　最上川　　　||　　　
+                        古池や　蛙飛び込む　水の音　　　||　　　
+                        憂き節や　竹の子となる　人の果て 　　|　
+                    </p>
+               </div>
+                <img id="stream-img" src="stream.gif" alt="a stream of water calmly running through rocks forever">
+            </div>
         </div>
     </div>
+    <script src="circletype.min.js"></script>
     <script>
         const enterButton = document.getElementById('enter-button');
         const card = document.getElementById('card');
         const menu = document.getElementById('menu');
-        const streamImg = document.getElementById('stream-img');
+        const menuContent = document.getElementById('menu-content');
 
         function enter() {
             card.classList.add('clicked');
@@ -121,13 +185,14 @@
                 console.log('menu', menu.style.display);
                 card.style.display = 'none';
                 menu.style.display = 'flex'; 
+                new CircleType(document.getElementById('circle-text'))
 
                 setTimeout(() => {
-                    streamImg.style.opacity = '1'; 
-                }, 500);
+                    menuContent.style.opacity = '1';
+                }, 600);
 
             }, 5500);
         }
-</script>
+    </script>
 </body>
 </html>
