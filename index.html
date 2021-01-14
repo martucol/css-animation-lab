@@ -10,6 +10,9 @@
             margin: 0;
             background: rgba(2,0,36,1);
         }
+        p {
+            color: white;
+        }
         .flex {
             width: 100%;
             height: 100%;
@@ -18,12 +21,19 @@
             justify-content: center;
             flex-wrap: wrap;
         }
-        #card {
+        .overflow-hidden {
+            overflow: hidden;
+        }
+
+        /*
+         * SCENE 1: INTRO
+         */
+        #intro {
             height: 100vh;
             width: 100vh;
             position: relative;
         }
-        .card-content{
+        .intro-content{
             position: absolute;
             top: 0;
             left: 0;
@@ -35,7 +45,7 @@
             opacity: 1;
             background: radial-gradient(circle, rgba(2,0,36,1) 37%, rgba(236,255,0,1) 39%, rgba(103,129,32,1) 40%, rgba(126,36,130,1) 51%, rgba(0,212,255,1) 100%); 
         }
-        #card:hover .radial-gradient--1 {
+        #intro:hover .radial-gradient--1 {
             opacity: 0;
         }
         .radial-gradient--2 {
@@ -48,24 +58,23 @@
             background: radial-gradient(circle, rgb(255, 51, 0) 37%, rgba(236,255,0,1) 39%, rgba(103,129,32,1) 50%, rgba(126,36,130,1) 58%, rgba(0,212,255,1) 100%);
             background-position: center;
         }
-        #card.clicked .radial-gradient--2,
-        #card.clicked .radial-gradient--1 {
+        #intro.clicked .radial-gradient--2,
+        #intro.clicked .radial-gradient--1 {
             opacity: 0;
         }
-        #card.clicked .radial-gradient--3 {
+        #intro.clicked .radial-gradient--3 {
             opacity: 1;
             animation: zoom-in ease-out 4s 1s;
             animation-fill-mode: forwards;
         }
-        #card.clicked #enter-button {
+        #intro.clicked #enter-button {
             display: none;
         }
-        #card.clicked {
+        #intro.clicked {
             transition: width ease-in 2s 2s;
             width: 100%;
         }
         #enter-button {
-            color: white;
             letter-spacing: 3px;
             font-family: monospace;
             font-size: .75rem;
@@ -81,6 +90,9 @@
             to{background-size: 400%}
         }
 
+        /*
+         * SCENE 2: HAIKU
+         */
         #menu {
             width: 100%;
             height: 100%;
@@ -94,17 +106,14 @@
             width: 100%;
             height: 100%;
             opacity: 0;
-            transition: all 4s;
+            transition: all 3s;
             overflow: hidden;
             perspective: 900px;
         }
 
-        #menu-content.clicked {
+        #menu.clicked {
+            transition: all 4s;
             height: 0;
-        }
-
-        #menu p {
-            color: white;
         }
 
         #menu #circle-text span{
@@ -146,33 +155,47 @@
                 transform: rotate(360deg);
             }
         }
+
+
+        /*
+         * SCENE 3: quote
+         */
         #matrix {
             width: 50%;
             text-align: center;
+            transition: perspective-origin 3s;
+            will-change: perspective-origin;
         }
+
         #matrix span {
             display: inline-block;
-            transition: transform ease-in-out 3s;
+            transition: transform ease-in-out 5s;
             margin: 0;
+        }
+
+        #quote {
+            background: radial-gradient(circle, rgba(0,0,0,1) 25%, rgba(255,55,0,1) 35%, rgba(48,10,0,1) 41%, rgba(0,0,0,1) 80%); 
+        }
+
+        .quote-container {
+            width: 50%;
+            height: 50%;
+            border-radius: 50%;
         }
 
         .quote-container:hover span {
             transform: translate(0) !important;
         }
 
-        .quote-container {
-            overflow: hidden;
-            background: radial-gradient(circle, rgba(0,0,0,1) 25%, rgba(255,55,0,1) 35%, rgba(48,10,0,1) 41%, rgba(0,0,0,1) 80%); 
-        }
     </style>
 </head>
 <body>
-    <div class="flex">
-        <div id="card">
-            <div class="card-content radial-gradient--3"></div>
-            <div class="card-content radial-gradient--2"></div>
-            <div class="card-content radial-gradient--1"></div>
-            <div class="card-content flex">
+    <div class="flex overflow-hidden">
+        <div id="intro">
+            <div class="intro-content radial-gradient--3"></div>
+            <div class="intro-content radial-gradient--2"></div>
+            <div class="intro-content radial-gradient--1"></div>
+            <div class="intro-content flex">
                 <p id="enter-button" onclick="enter()">enter/entrar/入る</p>
             </div>
         </div>
@@ -190,7 +213,9 @@
                </div>
                 <img id="stream-img" src="stream.gif" alt="a stream of water calmly running through rocks forever" onclick="showQuote(this)">
             </div>
-            <div class="flex quote-container">
+        </div>
+        <div id="quote" class="flex overflow-hidden">
+            <div class="quote-container flex">
                 <p id="matrix"></p>
             </div>
         </div>
@@ -198,29 +223,30 @@
     <script src="circletype.min.js"></script>
     <script>
         const enterButton = document.getElementById('enter-button');
-        const card = document.getElementById('card');
+        const intro = document.getElementById('intro');
         const menu = document.getElementById('menu');
         const menuContent = document.getElementById('menu-content');
         const matrix = document.getElementById('matrix');
+        const quoteDiv = document.getElementById('quote');
 
 
         function enter() {
-            card.classList.add('clicked');
+            intro.classList.add('clicked');
             setTimeout(() => {
-                card.style.display = 'none';
+                intro.style.display = 'none';
                 menu.style.display = 'flex'; 
                 new CircleType(document.getElementById('circle-text'))
 
                 setTimeout(() => {
                     menuContent.style.opacity = '1';
-                }, 600);
+                }, 50);
 
             }, 5500);
         }
 
         function showQuote(img) {
             img.style.transform = 'translateZ(-500000px)';
-            menuContent.classList.add('clicked');
+            menu.classList.add('clicked');
             setTimeout(() => {
                 menuContent.style.display = 'none';
             }, 4000);
@@ -236,6 +262,10 @@
                 matrix.appendChild(span);
             });
         }
+
+        quoteDiv.addEventListener('mousemove', e => {
+                matrix.style.perspectiveOrigin = e.clientX / 2 + 'px';
+            });
     </script>
 </body>
 </html>
