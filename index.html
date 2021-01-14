@@ -48,9 +48,6 @@
             background: radial-gradient(circle, rgb(255, 51, 0) 37%, rgba(236,255,0,1) 39%, rgba(103,129,32,1) 50%, rgba(126,36,130,1) 58%, rgba(0,212,255,1) 100%);
             background-position: center;
         }
-        .radial-gradient--4 {
-            background: radial-gradient(circle, rgba(2,0,36,1) 25%, rgba(255,55,0,1) 35%, rgba(48,10,0,1) 41%, rgba(0,0,0,1) 80%); 
-        }
         #card.clicked .radial-gradient--2,
         #card.clicked .radial-gradient--1 {
             opacity: 0;
@@ -89,9 +86,10 @@
             height: 100%;
             background: rgb(255, 51, 0);
             display: none;
+            overflow: hidden;
         }
 
-        #menu #menu-content {
+        #menu-content {
             position: relative;
             width: 100%;
             height: 100%;
@@ -101,11 +99,15 @@
             perspective: 900px;
         }
 
+        #menu-content.clicked {
+            height: 0;
+        }
+
         #menu p {
             color: white;
         }
 
-        #menu p span{
+        #menu #circle-text span{
             display: inline-block;
             margin-right: 30px;
         }
@@ -114,12 +116,13 @@
             position: absolute;
             left: calc(50% - 250px);
             top: calc(50% - 140px);
-            transition: transform 1.5s ease-out;
+            transition: transform 1.5s ease-in;
             transform-origin: top left;
         }
 
         #menu img:hover {
             transform: rotateY(45deg);
+            cursor: pointer;
         }
 
         .text-container {
@@ -142,6 +145,24 @@
             to {
                 transform: rotate(360deg);
             }
+        }
+        #matrix {
+            width: 50%;
+            text-align: center;
+        }
+        #matrix span {
+            display: inline-block;
+            transition: transform ease-in-out 3s;
+            margin: 0;
+        }
+
+        .quote-container:hover span {
+            transform: translate(0) !important;
+        }
+
+        .quote-container {
+            overflow: hidden;
+            background: radial-gradient(circle, rgba(2,0,36,1) 25%, rgba(255,55,0,1) 35%, rgba(48,10,0,1) 41%, rgba(0,0,0,1) 80%); 
         }
     </style>
 </head>
@@ -167,7 +188,10 @@
                         憂き節や　竹の子となる　人の果て 　　|　
                     </p>
                </div>
-                <img id="stream-img" src="stream.gif" alt="a stream of water calmly running through rocks forever">
+                <img id="stream-img" src="stream.gif" alt="a stream of water calmly running through rocks forever" onclick="showQuote(this)">
+            </div>
+            <div class="flex quote-container">
+                <p id="matrix"></p>
             </div>
         </div>
     </div>
@@ -177,12 +201,12 @@
         const card = document.getElementById('card');
         const menu = document.getElementById('menu');
         const menuContent = document.getElementById('menu-content');
+        const matrix = document.getElementById('matrix');
+
 
         function enter() {
             card.classList.add('clicked');
             setTimeout(() => {
-                console.log('card', card.style.display);
-                console.log('menu', menu.style.display);
                 card.style.display = 'none';
                 menu.style.display = 'flex'; 
                 new CircleType(document.getElementById('circle-text'))
@@ -192,6 +216,25 @@
                 }, 600);
 
             }, 5500);
+        }
+
+        function showQuote(img) {
+            img.style.transform = 'translateZ(-500000px)';
+            menuContent.classList.add('clicked');
+            setTimeout(() => {
+                menuContent.style.display = 'none';
+            }, 4000);
+
+            const ratio = 300;
+            matrix.style.perspective = '900px';
+            const quote = 'The real problem is not exterior. The real problem is interior.';
+            [...quote].forEach(char => {
+                const span = document.createElement('span')
+                span.innerHTML = char === ' ' ? '&nbsp;' : char;
+                span.style.transform = `translateZ(${Math.random() * (ratio + ratio) - ratio}px) 
+                    translateX(${Math.random() * (ratio + ratio) - ratio}px) translateY(${Math.random() * (ratio + ratio) - ratio}px)`;
+                matrix.appendChild(span);
+            });
         }
     </script>
 </body>
