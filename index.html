@@ -37,7 +37,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            transition: opacity ease-in 1s;
+            transition: opacity cubic-bezier(0,0,.83,1.04) 400ms;
             height: 100vh;
             width: 100vh;
         }
@@ -64,14 +64,14 @@
         }
         #intro.clicked .radial-gradient--3 {
             opacity: 1;
-            animation: zoom-in ease-out 4s 1s;
+            animation: zoom-in ease-out 2s 1s;
             animation-fill-mode: forwards;
         }
         #intro.clicked #enter-button {
             display: none;
         }
         #intro.clicked {
-            transition: width ease-in 2s 2s;
+            transition: width ease-in 1.5s 1.5s;
             width: 100%;
         }
         #enter-button {
@@ -79,7 +79,7 @@
             font-family: monospace;
             font-size: .75rem;
             cursor: pointer;
-            transition: all ease-in-out 500ms;
+            transition: all ease-in-out 300ms;
         }
         #enter-button:hover {
             text-shadow: white 0px 0px 2px;
@@ -165,6 +165,16 @@
             text-align: center;
             transition: perspective-origin 3s;
             will-change: perspective-origin;
+            animation: new-perspective 10s linear alternate;
+        }
+
+        @keyframes new-perspective {
+            from {
+                perspective-origin: 0%;
+            }
+            to {
+                perspective-origin: 100%;
+            }
         }
 
         #matrix span {
@@ -228,6 +238,7 @@
         const menuContent = document.getElementById('menu-content');
         const matrix = document.getElementById('matrix');
         const quoteDiv = document.getElementById('quote');
+        let mouseX = 0;
 
 
         function enter() {
@@ -241,7 +252,7 @@
                     menuContent.style.opacity = '1';
                 }, 50);
 
-            }, 5500);
+            }, 3000);
         }
 
         function showQuote(img) {
@@ -261,11 +272,20 @@
                     translateX(${Math.random() * (ratio + ratio) - ratio}px) translateY(${Math.random() * (ratio + ratio) - ratio}px)`;
                 matrix.appendChild(span);
             });
+
+            // updatePerspective();
         }
 
-        quoteDiv.addEventListener('mousemove', e => {
-                matrix.style.perspectiveOrigin = e.clientX / 2 + 'px';
-            });
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+        });
+
+
+        // function updatePerspective() {
+        //     matrix.style.perspectiveOrigin = mouseX / window.innerHeight * 100 + '%';
+        //     window.requestAnimationFrame(updatePerspective);
+        // }
+
     </script>
 </body>
 </html>
