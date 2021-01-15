@@ -163,6 +163,8 @@
         #matrix {
             width: 50%;
             text-align: center;
+            justify-content: center;
+            display: flex;
             transition: perspective-origin 3s;
             will-change: perspective-origin;
             animation: new-perspective 10s linear alternate;
@@ -262,13 +264,13 @@
                 menuContent.style.display = 'none';
             }, 4000);
 
-            const ratio = 300;
+            const ratio = 400;
             matrix.style.perspective = '900px';
             const quote = 'The real problem is not exterior. The real problem is interior.';
             [...quote].forEach(char => {
                 const span = document.createElement('span')
                 span.innerHTML = char === ' ' ? '&nbsp;' : char;
-                span.style.transform = `translateZ(${Math.random() * (ratio + ratio) - ratio}px) 
+                span.style.transform = `translateZ(${Math.random() * (ratio*2 + ratio) - ratio}px) 
                     translateX(${Math.random() * (ratio + ratio) - ratio}px) translateY(${Math.random() * (ratio + ratio) - ratio}px)`;
                 matrix.appendChild(span);
             });
